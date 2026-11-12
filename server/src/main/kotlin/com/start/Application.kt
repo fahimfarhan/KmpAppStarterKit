@@ -75,6 +75,25 @@ fun Application.module() {
                 call.respond(HttpStatusCode.NotFound, "Todo not found")
             }
         }
+
+        put("/api/todos/{id}") {
+            val id = call.parameters["id"]?.toIntOrNull()
+
+            if (id == null) {
+                call.respond(HttpStatusCode.BadRequest, "Invalid ID")
+                return@put
+            }
+
+            val index = todos.indexOfFirst { it.id == id }
+
+            if (index == -1) {
+                call.respond(HttpStatusCode.NotFound, "Todo not found")
+            } else {
+                val updatedTodo = call.receive<Todos>().copy(id = id)
+                todos[index] = updatedTodo
+                call.respond(updatedTodo)
+            }
+        }
     }
 }
 
