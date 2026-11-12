@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
+    alias(libs.plugins.kotlinSerialization)
+
 }
 
 group = "com.start"
@@ -10,6 +12,10 @@ application {
 }
 
 dependencies {
+    // return json response
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:3.6.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:3.6.0")
+
     api(project(":core"))
     implementation(libs.logback)
     implementation(libs.ktor.serverCore)
