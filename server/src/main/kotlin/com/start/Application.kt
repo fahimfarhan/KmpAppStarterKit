@@ -1,6 +1,7 @@
 package com.start
 
 import com.start.models.Todos
+import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -45,6 +46,17 @@ fun Application.module() {
         post("/api/todos") {
             val todo = call.receive<Todos>()
             todos.add(todo)
+            call.respond(todo)
+        }
+
+        get(path = "/api/todos/{id}") {
+            val id = call.parameters["id"]?.toIntOrNull()
+            val todo = todos.find { ithTodo -> ithTodo.id == id }
+
+            if(null == todo) {
+                call.respond(HttpStatusCode.NotFound, "Todo not found")
+                return@get
+            }
             call.respond(todo)
         }
     }
