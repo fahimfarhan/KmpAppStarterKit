@@ -16,6 +16,11 @@ fun main() {
         .start(wait = true)
 }
 
+private val todos = mutableListOf(
+    Todos(id = 1, name = "Learn Ktor"),
+    Todos(id = 2, name = "Build Todo App"),
+)
+
 fun Application.module() {
 
     // this should return json response
@@ -34,14 +39,12 @@ fun Application.module() {
         }
 
         get("/api/todos") {
-            val todo1 = Todos(1, "Learn Kmp")
-            val todo2 = Todos(2, "learn ML")
-
-            call.respond(listOf(todo1, todo2))
+            call.respond(todos)
         }
 
         post("/api/todos") {
             val todo = call.receive<Todos>()
+            todos.add(todo)
             call.respond(todo)
         }
     }
