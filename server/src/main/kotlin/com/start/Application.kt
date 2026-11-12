@@ -1,5 +1,6 @@
 package com.start
 
+import com.start.models.Todos
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -29,6 +30,13 @@ fun Application.module() {
 
         get("/health") {
             call.respond(HealthResponse(status = "OK"))
+        }
+
+        get("/api/todos") {
+            val todo1 = Todos(1, "Learn Kmp")
+            val todo2 = Todos(2, "learn ML")
+
+            call.respond(listOf(todo1, todo2))
         }
     }
 }
