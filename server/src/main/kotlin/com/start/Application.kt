@@ -59,6 +59,22 @@ fun Application.module() {
             }
             call.respond(todo)
         }
+
+
+        /**
+         * curl -X DELETE http://localhost:8080/api/todos/1
+         * */
+        delete(path = "/api/todos/{id}") {
+            val id = call.parameters["id"]?.toIntOrNull()
+
+            val removed = todos.removeIf { ithTodo -> ithTodo.id == id }
+
+            if (removed) {
+                call.respond(HttpStatusCode.NoContent)
+            } else {
+                call.respond(HttpStatusCode.NotFound, "Todo not found")
+            }
+        }
     }
 }
 
