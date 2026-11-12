@@ -6,6 +6,7 @@ import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.request.receive
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
@@ -37,6 +38,11 @@ fun Application.module() {
             val todo2 = Todos(2, "learn ML")
 
             call.respond(listOf(todo1, todo2))
+        }
+
+        post("/api/todos") {
+            val todo = call.receive<Todos>()
+            call.respond(todo)
         }
     }
 }
